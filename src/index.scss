@@ -1,0 +1,90 @@
+//variables
+$colors: (
+  primary: #2650ca,
+  primary-light: lighten(#7267cb, 77%),
+  sidebar: #0b2e93,
+  navbar: #283966,
+  grayv: #f0f3f4,
+  white-c: #ffff,
+  red-c: #e30b0b,
+  black-c: #000,
+  light-blue: #23acd8,
+  black-light: #000c17,
+  transparent: #ffffff00,
+);
+
+$fonts: (
+  h1-s: 40px,
+);
+h4, h3, h2 {
+  font-weight: 600 !important;
+}
+
+@function color($color-name) {
+  @return map-get($colors, $color-name);
+}
+@function font($font-name) {
+  @return map-get($fonts, $font-name);
+}
+@mixin mobile {
+  @media (max-width: #{$mobile}) {
+    @content;
+  }
+}
+
+.center-rows {
+  justify-content: space-around;
+}
+.ant-form-item-control-input-content p {
+  color: color(red-c);
+  font-size: 12px;
+  font-weight: 400;
+}
+.jus-con-cen {
+  justify-content: center;
+}
+.text-center {
+  // text-align: center;
+}
+.ant-form-item-label label:after {
+  content: none !important;
+}
+
+.f-detail-modal {
+  width: 1150px !important;
+  //width: 700px !important;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  //background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: color(primary);
+}
+
+.rc-virtual-list-scrollbar-show {
+  display: block !important;
+}
+.ant-modal-title {
+  font-weight: 600 !important;
+}
+.ant-tag-green{
+  // width: 145px;
+  // text-align: center;
+}
+.print-modal {
+  width: 700px !important;
+}
+
+.ant-table-thead > tr > th {
+  background: color(sidebar) !important;
+  color: color(white-c) !important;
+  padding: 10px 16px !important;
+}
+.ant-table-tbody>tr>td{
+  padding: 12px !important;
+}
