@@ -15,7 +15,8 @@ import {
   getDocs,
   collection,
   where,
-  addDoc,
+  setDoc,
+  doc,
 } from "firebase/firestore";
 class Dashboard extends Component {
   constructor(props) {
@@ -206,7 +207,7 @@ class Dashboard extends Component {
     const json = JSON.stringify(row);
     this.setState({ loading: true });
     try {
-      await addDoc(collection(db, "home"), {
+      await setDoc(doc(db, "home", 'MxuVWSE7CCPJ1IRsAGZu'), {
         file: json,
       });
       $Message.success("Successfully saved");
