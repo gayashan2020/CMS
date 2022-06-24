@@ -10,6 +10,10 @@
     max-width:600px;
 }
 
+.header{
+  font-size: 32;
+}
+
 $mobile: 1200px;
 
 @mixin mobile {

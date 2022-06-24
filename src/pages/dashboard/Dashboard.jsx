@@ -31,6 +31,8 @@ class Dashboard extends Component {
       modelPara: false,
       modelImg: false,
       modelHP: false,
+      selectModel: false,
+      modelMH: false,
       loading: false,
     };
   }
@@ -76,6 +78,14 @@ class Dashboard extends Component {
     this.setState({
       rowArray: row,
       model: false,
+    });
+  };
+  addElementMH = (index, i, text) => {
+    let row = this.state.rowArray;
+    row[index][i] = text + "_mh";
+    this.setState({
+      rowArray: row,
+      modelMH: false,
     });
   };
   addElementPara = (index, i, text) => {
@@ -126,6 +136,15 @@ class Dashboard extends Component {
       i: i,
       index: index,
       model: true,
+      selectModel: false,
+    });
+  };
+
+  selectModel = (index, i) => {
+    this.setState({
+      i: i,
+      index: index,
+      selectModel: true,
     });
   };
 
@@ -135,6 +154,7 @@ class Dashboard extends Component {
       i: i,
       index: index,
       modelPara: true,
+      selectModel: false,
     });
   };
 
@@ -144,15 +164,25 @@ class Dashboard extends Component {
       i: i,
       index: index,
       modelImg: true,
+      selectModel: false,
     });
   };
 
   addElementTextHP = (index, i) => {
-    console.log(index, i);
     this.setState({
       i: i,
       index: index,
       modelHP: true,
+      selectModel: false,
+    });
+  };
+
+  addElementTextMH = (index, i) => {
+    this.setState({
+      i: i,
+      index: index,
+      modelMH: true,
+      selectModel: false,
     });
   };
 
@@ -199,7 +229,7 @@ class Dashboard extends Component {
       background: "#0092ff",
       padding: "8px 0",
     };
-    const { columnArray, rowArray, loading } = this.state;
+    const { columnArray, rowArray, loading, index, i } = this.state;
     return (
       <div>
         {loading && <$Spin />}
@@ -239,42 +269,23 @@ class Dashboard extends Component {
                       {e === 1 && (
                         <Button
                           onClick={() => {
-                            this.addElementText(index, i);
+                            this.selectModel(index, i);
                           }}
                         >
-                          Heading
+                          Select
                         </Button>
                       )}
-                      {e === 1 && (
-                        <Button
-                          onClick={() => {
-                            this.addElementTextPara(index, i);
-                          }}
-                        >
-                          Paragraph
-                        </Button>
-                      )}
-                      {e === 1 && (
-                        <Button
-                          onClick={() => {
-                            this.addElementTextImg(index, i);
-                          }}
-                        >
-                          Image
-                        </Button>
-                      )}
-                      {e === 1 && (
-                        <Button
-                          onClick={() => {
-                            this.addElementTextHP(index, i);
-                          }}
-                        >
-                          Compound
-                        </Button>
-                      )}
+
                       {e !== 1 &&
                         this.state.rowArray[index][i].split("_")[1] === "h" && (
                           <h1>{this.state.rowArray[index][i].split("_")[0]}</h1>
+                        )}
+                      {e !== 1 &&
+                        this.state.rowArray[index][i].split("_")[1] ===
+                          "mh" && (
+                          <h1 style={{ fontSize: "3em" }}>
+                            {this.state.rowArray[index][i].split("_")[0]}
+                          </h1>
                         )}
                       {e !== 1 &&
                         this.state.rowArray[index][i].split("_")[1] === "p" && (
@@ -303,6 +314,127 @@ class Dashboard extends Component {
                 ))}
             </Row>
           ))}
+
+        <Modal
+          // title={"Add Purchase Order No"}
+          style={{ top: 20 }}
+          footer={null}
+          visible={this.state.selectModel}
+          onCancel={() => this.setState({ selectModel: false })}
+          // className="po-modal"
+        >
+          <div className="modal-footer">
+            <Button
+              key="back"
+              className="common-btn cancle-btn"
+              onClick={() => this.setState({ selectModel: false })}
+              style={{ margin: "10px" }}
+            >
+              Cancel
+            </Button>
+            <Button
+              key="submit"
+              className="common-btn"
+              type="primary"
+              onClick={() => {
+                this.addElementText(index, i);
+              }}
+              style={{ margin: "10px" }}
+            >
+              Add Header
+            </Button>
+            <Button
+              key="submit"
+              className="common-btn"
+              type="primary"
+              onClick={() => {
+                this.addElementTextHP(index, i);
+              }}
+              style={{ margin: "10px" }}
+            >
+              Add Header and Paragraph
+            </Button>
+            <Button
+              key="submit"
+              className="common-btn"
+              type="primary"
+              onClick={() => {
+                this.addElementTextImg(index, i);
+              }}
+              style={{ margin: "10px" }}
+            >
+              Add Image
+            </Button>
+            <Button
+              key="submit"
+              className="common-btn"
+              type="primary"
+              onClick={() => {
+                this.addElementTextPara(index, i);
+              }}
+              style={{ margin: "10px" }}
+            >
+              Add Paragraph
+            </Button>
+            <Button
+              key="submit"
+              className="common-btn"
+              type="primary"
+              onClick={() => {
+                this.addElementTextMH(index, i);
+              }}
+              style={{ margin: "10px" }}
+            >
+              Add Main Header
+            </Button>
+          </div>
+        </Modal>
+
+        <Modal
+          // title={"Add Purchase Order No"}
+          style={{ top: 20 }}
+          footer={null}
+          visible={this.state.modelMH}
+          onCancel={() => this.setState({ modelMH: false })}
+          className="po-modal"
+        >
+          <$Input
+            name="text"
+            label="Add Text"
+            // value={this.state.text}
+            handleChange={this.validateProperty}
+          />
+          {console.log(
+            this.state.index,
+            this.state.i,
+            this.state.text,
+            process.env.PUBLIC_URL + "1.png"
+          )}
+          <div className="modal-footer">
+            <Button
+              key="back"
+              className="common-btn cancle-btn"
+              onClick={() => this.setState({ modelMH: false })}
+            >
+              Cancel
+            </Button>
+            <Button
+              key="submit"
+              className="common-btn"
+              type="primary"
+              onClick={() => {
+                this.addElementMH(
+                  this.state.index,
+                  this.state.i,
+                  this.state.text
+                );
+              }}
+            >
+              Save
+            </Button>
+          </div>
+        </Modal>
+
         <Modal
           // title={"Add Purchase Order No"}
           style={{ top: 20 }}
@@ -397,7 +529,6 @@ class Dashboard extends Component {
           className="po-modal"
         >
           <input type="file" onChange={this.onFileChange} />
-          {console.log(this.state.index, this.state.i, this.state.text)}
           <div className="modal-footer">
             <Button
               key="back"
@@ -443,7 +574,6 @@ class Dashboard extends Component {
             // value={this.state.text}
             handleChange={this.validateProperty}
           />
-          {console.log(this.state.index, this.state.i, this.state.text)}
           <div className="modal-footer">
             <Button
               key="back"
