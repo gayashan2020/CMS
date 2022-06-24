@@ -1,0 +1,148 @@
+@import '../../index.scss';
+
+$mobile: 1200px;
+
+@mixin mobile {
+  @media (max-width: #{$mobile}) {
+    @content;
+  }
+}
+
+$mobile_02: 1750px;
+
+@mixin mobile_02 {
+  @media (max-width: #{$mobile_02}) {
+    @content;
+  }
+}
+
+.login-wrapper {
+  background-color: #243256;
+  height: 100vh;
+}
+.login-form {
+  //background: #ffffffcf !important;
+  //background: color(white-c);
+  // padding: 1em 3em 3em;
+  border-radius: 10px;
+}
+.main-title {
+  text-align: center;
+  color: color(white-c);
+  font-size: 3em;
+  // margin: 1em 0em 1em 0em;
+  padding: 1em 0em 0em 0em;
+}
+.main-title span {
+  color: color(light-blue);
+}
+.sign-in {
+  text-align: center;
+  font-size: 25px;
+  color: color(primary);
+}
+.log-btn-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2em;
+}
+.log-btn-wrapper button {
+  width: 115px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.sign-in-btn:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background-color: color(light-blue) !important;
+  border: none;
+}
+.forget-pwd {
+  color: #23acd8;
+}
+.forget-pwd:hover {
+  text-decoration: underline;
+}
+.login-input-un input {
+  height: 40px !important;
+}
+.login-input-pwd input {
+  height: 30px !important;
+}
+.log-card {
+  width: 500px;
+  // margin: 2em !important;
+  margin: 0em !important;
+  //border-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+  border-top-left-radius: 8px !important;
+  // justify-content: center;
+  // margin: 25px auto 15px !important;
+  background: #ffffffe3 !important;
+}
+.log-card {
+  .ant-card-body {
+    padding: 35px;
+    // padding: 0;
+  }
+}
+
+@include mobile {
+  .log-card {
+    width: unset;
+  }
+  .main-title {
+    font-size: 2em;
+  }
+}
+
+.sigin-title {
+  color: #000;
+  font-size: 28px;
+  text-align: center;
+}
+.sub {
+  color: #0d2e6d;
+}
+
+.powered-by {
+  p {
+    text-align: center;
+    color: #fff;
+    margin: 0;
+  }
+  background: #0d2e6d;
+  padding: 1em;
+  border-bottom-right-radius: 8px !important;
+  border-bottom-left-radius: 8px !important;
+}
+.powered-sub-title {
+  //color: #23ACD8;
+}
+
+//login form -02
+.login-bg {
+  background-image: url(../../assets/images/welcome.jpg);
+  // background-size: 1000px 2003px;
+  background-repeat: no-repeat;
+  //padding: 18em 0em;
+  height: 100vh;
+  background-position: 32% 0%;
+  background-size: cover;
+}
+.timg {
+  height: 100vh;
+  width: 1180px;
+  //width: 950px;
+  //width: 900px;
+  //width: 900px;
+}
+
+@include mobile_02 {
+  .timg {
+    width: 950px !important;
+  }
+}
+.login-row {
+  height: 100vh;
+  align-items: center;
+}

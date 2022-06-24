@@ -5,9 +5,18 @@ import {
   getAccessToken,
   getUser,
 } from "../../config/LocalStorage";
-import { $Input, $TextArea } from "../../components/antd";
+import { $Input, $TextArea, $Message, $Spin } from "../../components/antd";
 import { Row, Col, Button, Modal, Input } from "antd";
 import "./Dashboard.scss";
+import { db } from "../../config/firebase";
+import {
+  getFirestore,
+  query,
+  getDocs,
+  collection,
+  where,
+  addDoc,
+} from "firebase/firestore";
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +31,7 @@ class Dashboard extends Component {
       modelPara: false,
       modelImg: false,
       modelHP: false,
+      loading: false,
     };
   }
   addColumn = (index) => {
@@ -160,28 +170,39 @@ class Dashboard extends Component {
     });
   };
 
-  saveArray=async()=>{
+  saveArray = async () => {
     let row = this.state.rowArray;
     // let jsonRow = JSON.stringify(row)
-    const json=JSON.stringify(row);
-    
-    const blob=new Blob([json],{type:'application/json'})
-    const href = await URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = href;
-    link.download = "file.json";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
+    const json = JSON.stringify(row);
+    this.setState({ loading: true });
+    try {
+      await addDoc(collection(db, "home"), {
+        file: json,
+      });
+      $Message.success("Successfully saved");
+    } catch (err) {
+      console.error(err);
+      $Message.error(err.message);
+    }
+    this.setState({ loading: false });
+    // const blob = new Blob([json], { type: "application/json" });
+    // const href = await URL.createObjectURL(blob);
+    // const link = document.createElement("a");
+    // link.href = href;
+    // link.download = "file.json";
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
+  };
   render() {
     const style = {
       background: "#0092ff",
       padding: "8px 0",
     };
-    const { columnArray, rowArray } = this.state;
+    const { columnArray, rowArray, loading } = this.state;
     return (
       <div>
+        {loading && <$Spin />}
         <Row>
           <Button onClick={this.addRow}>Add Row</Button>
           <Button onClick={this.saveArray}>Save</Button>

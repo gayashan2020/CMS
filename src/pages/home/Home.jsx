@@ -5,10 +5,20 @@ import {
   getAccessToken,
   getUser,
 } from "../../config/LocalStorage";
-import { $Input, $TextArea } from "../../components/antd";
+import { $Input, $TextArea, $Message } from "../../components/antd";
 import { Row, Col, Button, Modal, Input } from "antd";
 import "./Home.scss";
-
+import { db } from "../../config/firebase";
+import {
+  getFirestore,
+  query,
+  doc,
+  getDocs,
+  collection,
+  where,
+  addDoc,
+  onSnapshot,
+} from "firebase/firestore";
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -27,21 +37,45 @@ class Home extends Component {
   }
 
   componentDidMount = async () => {
-    let data = await fetch("file.json", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    }).then(function (response) {
-      console.log(response);
-      return response.json();
-    });
-    console.log(data);
-    // let colArray = JSON.parse(data);
-    this.setState({
-      rowArray: data,
-      //   elementArray: newElement,
-    });
+    try {
+      // let dataRow = await getDoc(doc(db, '3GssDbdr8NKjcCKcV4NZ',"home"))
+      const q = query(collection(db, "home"));
+      const data = onSnapshot(q, (querySnapshot) => {
+        const Row = [];
+        querySnapshot.forEach((doc) => {
+          Row.push(doc.data().file);
+        });
+        this.setState({
+          rowArray: JSON.parse(Row[0]),
+          //   elementArray: newElement,
+        });
+      });
+      // let data = JSON.parse(dataRow.file);
+      // console.log(data, dataRow);
+      // this.setState({
+      //   rowArray: data,
+      //   //   elementArray: newElement,
+      // });
+    } catch (err) {
+      console.error(err);
+      $Message.error(err.message);
+    }
+
+    // let data = await fetch("file.json", {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Accept: "application/json",
+    //   },
+    // }).then(function (response) {
+    //   console.log(response);
+    //   return response.json();
+    // });
+    // console.log(data);
+    // // let colArray = JSON.parse(data);
+    // this.setState({
+    //   rowArray: data,
+    //   //   elementArray: newElement,
+    // });
   };
 
   addColumn = (index) => {
@@ -59,7 +93,6 @@ class Home extends Component {
     // console.log(newColumn,newRow[index]);
     newRow[index] = newColumn;
     console.log(newRow);
-
 
     this.setState({
       rowArray: newRow,
@@ -240,7 +273,6 @@ class Home extends Component {
                 ))}
             </Row>
           ))}
-        
       </div>
     );
   }

@@ -21,7 +21,11 @@ import {
   removeUser,
 } from "../../config/LocalStorage";
 import { RoutesConstant } from "../../assets/constants";
-
+import {
+  auth,
+  logInWithEmailAndPassword,
+  signInWithGoogle,
+} from "../../config/firebase";
 import { Row, Col, Button } from "antd";
 
 const schema = Joi.object({
@@ -36,7 +40,9 @@ const schema = Joi.object({
       "string.pattern.base": "Enter a valid Email or User Name.",
     }),
   password: Joi.string()
-    .regex(/^(?=.*[A-Za-z])(?=.*\d)|(?=.*[A-Za-z])(?=.*[@$!%*#?&])|(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/)
+    .regex(
+      /^(?=.*[A-Za-z])(?=.*\d)|(?=.*[A-Za-z])(?=.*[@$!%*#?&])|(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/
+    )
     .required()
     .label("Password")
     .messages({
@@ -125,28 +131,24 @@ class Login extends Component {
 
     const form = { ...this.state.form };
 
-    let dataObj = {
-      userName: form.userName,
-      password: form.password,
-    };
-
     try {
       //send user ID & password and get tokens
-      // let data = await User.login(dataObj);
+      let data = await logInWithEmailAndPassword(form.userName, form.password);
+      console.log(data);
       // this.resetFields();
 
-      // //execute login function in AuthContext.js
-      // //await this.context.logIn(data, this.props);
-      // removeAccessToken();
-      // removeUser();
-      // setAccessToken(data.token);
-      // setUser(JSON.stringify(data.details));
+      if (data) {
+        removeAccessToken();
+        removeUser();
+        setAccessToken(data.user);
 
-      // //stop loading
-      // this.setState({ loading: false });
-      this.props.history.push(RoutesConstant.dashboard);
+        this.setState({ loading: false });
+        this.props.history.push(RoutesConstant.dashboard);
+      } else {
+        this.setState({ loading: false });
+      }
+
       return;
-
     } catch (error) {
       console.log(error);
       this.setState({ loading: false });
@@ -169,7 +171,8 @@ class Login extends Component {
                         <div className="login-form">
                           <div>
                             <h3 className="sigin-title">
-                              <span className="sub">Learning Management </span>System
+                              <span className="sub">Learning Management </span>
+                              System
                             </h3>
                           </div>
                           <div>
@@ -177,14 +180,14 @@ class Login extends Component {
                           </div>
                           <$Form onSubmit={this.submit}>
                             <div className="login-input-un">
-                            <$Input
-                            name="userName"
-                            autoFocus
-                            label="Email/ User Name"
-                            handleChange={this.onHandleChange}
-                            value={form.userName}
-                            error={errors.userName}
-                          />
+                              <$Input
+                                name="userName"
+                                autoFocus
+                                label="Email/ User Name"
+                                handleChange={this.onHandleChange}
+                                value={form.userName}
+                                error={errors.userName}
+                              />
                             </div>
                             <div className="login-input-pwd">
                               <$Input
@@ -200,10 +203,15 @@ class Login extends Component {
                               <$Button
                                 className="sign-in-btn"
                                 type="primary"
-                               onClick={this.submit}
+                                onClick={this.submit}
                               >
                                 Log in
                               </$Button>
+                            </div>
+                            <div>
+                              <Link className="forget-pwd" to="/register">
+                                Sign Up
+                              </Link>
                             </div>
                           </$Form>
                         </div>
