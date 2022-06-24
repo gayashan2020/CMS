@@ -247,6 +247,13 @@ class Home extends Component {
                           <h1>{this.state.rowArray[index][i].split("_")[0]}</h1>
                         )}
                       {e !== 1 &&
+                        this.state.rowArray[index][i].split("_")[1] ===
+                          "mh" && (
+                          <h1 style={{ fontSize: "3em" }}>
+                            {this.state.rowArray[index][i].split("_")[0]}
+                          </h1>
+                        )}
+                      {e !== 1 &&
                         this.state.rowArray[index][i].split("_")[1] === "p" && (
                           <p>{this.state.rowArray[index][i].split("_")[0]}</p>
                         )}
