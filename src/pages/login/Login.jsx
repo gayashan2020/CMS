@@ -134,13 +134,14 @@ class Login extends Component {
     try {
       //send user ID & password and get tokens
       let data = await logInWithEmailAndPassword(form.userName, form.password);
-      console.log(data);
+      console.log(data.user.email);
       // this.resetFields();
 
       if (data) {
         removeAccessToken();
         removeUser();
-        setAccessToken(data.user);
+        setAccessToken(data.user.accessToken);
+        setUser(data.user.email)
 
         this.setState({ loading: false });
         this.props.history.push(RoutesConstant.dashboard);
@@ -162,62 +163,65 @@ class Login extends Component {
         {loading && <$Spin />}
         <$Row className="">
           <$Col xl={24}>
-            <div className="login-bg">
+            <div>
               <div className="login-form-wrapper">
                 <$Row className="center-rows login-row">
-                  <div className="">
-                    <$Card className="log-card">
-                      <$Col span={24}>
-                        <div className="login-form">
-                          <div>
-                            <h3 className="sigin-title">
-                              <span className="sub">Learning Management </span>
-                              System
-                            </h3>
-                          </div>
-                          <div>
-                            <h3 className="sign-in">Log In</h3>
-                          </div>
-                          <$Form onSubmit={this.submit}>
-                            <div className="login-input-un">
-                              <$Input
-                                name="userName"
-                                autoFocus
-                                label="Email/ User Name"
-                                handleChange={this.onHandleChange}
-                                value={form.userName}
-                                error={errors.userName}
-                              />
-                            </div>
-                            <div className="login-input-pwd">
-                              <$Input
-                                name="password"
-                                type="password"
-                                label="Password"
-                                handleChange={this.onHandleChange}
-                                value={form.password}
-                                error={errors.password}
-                              />
-                            </div>
-                            <div className="log-btn-wrapper">
-                              <$Button
-                                className="sign-in-btn"
-                                type="primary"
-                                onClick={this.submit}
-                              >
-                                Log in
-                              </$Button>
+                  <$Col span={12} className="login-bg"></$Col>
+                  <$Col span={12}>
+                    <div className="card-margin">
+                      <$Card className="log-card">
+                        <$Col span={24}>
+                          <div className="login-form">
+                            <div>
+                              <h3 className="sigin-title">
+                                <span className="sub">
+                                  Learning Management{" "}
+                                </span>
+                                System
+                              </h3>
                             </div>
                             <div>
-                              <Link className="forget-pwd" to="/register">
-                                Sign Up
-                              </Link>
+                              <h3 className="sign-in">Log In</h3>
                             </div>
-                          </$Form>
-                        </div>
-                      </$Col>
-                    </$Card>
-                  </div>
+                            <$Form onSubmit={this.submit}>
+                              <div className="login-input-un">
+                                <$Input
+                                  name="userName"
+                                  autoFocus
+                                  label="Email/ User Name"
+                                  handleChange={this.onHandleChange}
+                                  value={form.userName}
+                                  error={errors.userName}
+                                />
+                              </div>
+                              <div className="login-input-pwd">
+                                <$Input
+                                  name="password"
+                                  type="password"
+                                  label="Password"
+                                  handleChange={this.onHandleChange}
+                                  value={form.password}
+                                  error={errors.password}
+                                />
+                              </div>
+                              <div className="log-btn-wrapper">
+                                <$Button
+                                  className="sign-in-btn"
+                                  type="primary"
+                                  onClick={this.submit}
+                                >
+                                  Log in
+                                </$Button>
+                                <Link className="forget-pwd" to="/register">
+                                  Sign Up
+                                </Link>
+                              </div>
+                            </$Form>
+                          </div>
+                        </$Col>
+                      </$Card>
+                    </div>
+                  </$Col>
                 </$Row>
               </div>
             </div>

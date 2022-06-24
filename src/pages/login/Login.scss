@@ -136,7 +136,9 @@ $mobile_02: 1750px;
   //width: 900px;
   //width: 900px;
 }
-
+.card-margin{
+  margin-left: 15%;
+}
 @include mobile_02 {
   .timg {
     width: 950px !important;

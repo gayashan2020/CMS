@@ -176,82 +176,85 @@ class Register extends Component {
         {loading && <$Spin />}
         <$Row className="">
           <$Col xl={24}>
-            <div className="login-bg">
+            <div>
               <div className="login-form-wrapper">
                 <$Row className="center-rows login-row">
-                  <div className="">
-                    <$Card className="log-card">
-                      <$Col span={24}>
-                        <div className="login-form">
-                          <div>
-                            <h3 className="sigin-title">
-                              <span className="sub">Learning Management </span>
-                              System
-                            </h3>
-                          </div>
-                          <div>
-                            <h3 className="sign-in">Sign Up</h3>
-                          </div>
-                          <$Form onSubmit={this.submit}>
-                            <div className="login-input-un">
-                              <$Input
-                                name="userName"
-                                autoFocus
-                                label="User Name"
-                                handleChange={this.onHandleChange}
-                                value={form.userName}
-                                error={errors.userName}
-                              />
-                            </div>
-                            <div className="login-input-un">
-                              <$Input
-                                name="email"
-                                autoFocus
-                                label="Email"
-                                handleChange={this.onHandleChange}
-                                value={form.email}
-                                error={errors.email}
-                              />
-                            </div>
-                            <div className="login-input-pwd">
-                              <$Input
-                                name="password"
-                                type="password"
-                                label="Password"
-                                handleChange={this.onHandleChange}
-                                value={form.password}
-                                error={errors.password}
-                              />
-                            </div>
-                            <div className="login-input-pwd">
-                              <$Input
-                                name="rePassword"
-                                type="password"
-                                label="Re Type Password"
-                                handleChange={this.onHandleChange}
-                                value={form.rePassword}
-                                error={errors.rePassword}
-                              />
-                            </div>
-                            <div className="log-btn-wrapper">
-                              <$Button
-                                className="sign-in-btn"
-                                type="primary"
-                                onClick={this.submit}
-                              >
-                                Sign Up
-                              </$Button>
+                  <$Col span={12} className="login-bg"></$Col>
+                  <$Col span={12}>
+                    <div className="card-margin">
+                      <$Card className="log-card">
+                        <$Col span={24}>
+                          <div className="login-form">
+                            <div>
+                              <h3 className="sigin-title">
+                                <span className="sub">
+                                  Learning Management{" "}
+                                </span>
+                                System
+                              </h3>
                             </div>
                             <div>
-                              <Link className="forget-pwd" to="/login">
-                                Log In
-                              </Link>
+                              <h3 className="sign-in">Sign Up</h3>
                             </div>
-                          </$Form>
-                        </div>
-                      </$Col>
-                    </$Card>
-                  </div>
+                            <$Form onSubmit={this.submit}>
+                              <div className="login-input-un">
+                                <$Input
+                                  name="userName"
+                                  autoFocus
+                                  label="User Name"
+                                  handleChange={this.onHandleChange}
+                                  value={form.userName}
+                                  error={errors.userName}
+                                />
+                              </div>
+                              <div className="login-input-un">
+                                <$Input
+                                  name="email"
+                                  autoFocus
+                                  label="Email"
+                                  handleChange={this.onHandleChange}
+                                  value={form.email}
+                                  error={errors.email}
+                                />
+                              </div>
+                              <div className="login-input-pwd">
+                                <$Input
+                                  name="password"
+                                  type="password"
+                                  label="Password"
+                                  handleChange={this.onHandleChange}
+                                  value={form.password}
+                                  error={errors.password}
+                                />
+                              </div>
+                              <div className="login-input-pwd">
+                                <$Input
+                                  name="rePassword"
+                                  type="password"
+                                  label="Re Type Password"
+                                  handleChange={this.onHandleChange}
+                                  value={form.rePassword}
+                                  error={errors.rePassword}
+                                />
+                              </div>
+                              <div className="log-btn-wrapper">
+                                <$Button
+                                  className="sign-in-btn"
+                                  type="primary"
+                                  onClick={this.submit}
+                                >
+                                  Sign Up
+                                </$Button>
+                                <Link className="forget-pwd" to="/login">
+                                  Log In
+                                </Link>
+                              </div>
+                            </$Form>
+                          </div>
+                        </$Col>
+                      </$Card>
+                    </div>
+                  </$Col>
                 </$Row>
               </div>
             </div>
