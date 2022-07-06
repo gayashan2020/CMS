@@ -13,15 +13,7 @@
 .header{
   font-size: 32;
 }
-.dash-bg {
-  // background-image: url(../../assets/images/welcome.jpg);
-  // background-size: 1000px 2003px;
-  background-repeat: no-repeat;
-  //padding: 18em 0em;
-  height: 100vh;
-  background-position: 32% 0%;
-  background-size: cover;
-}
+
 $mobile: 1200px;
 
 @mixin mobile {

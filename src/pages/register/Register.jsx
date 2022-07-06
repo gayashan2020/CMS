@@ -12,7 +12,6 @@ import {
   $Message,
 } from "../../components/antd";
 import { Link } from "react-router-dom";
-import { User } from "../../services";
 import {
   setAccessToken,
   setUser,

@@ -33,24 +33,13 @@ const Header = (props) => {
     // } catch (error) {}
   };
 
-  const currentUser = JSON.parse(getUser());
+
   const { UserOutlined, DownOutlined } = $AntIcons;
 
   function handleButtonClick(e) {}
 
   function handleMenuClick(e) {}
 
-  const displayProfileImage = (currentUser) => {
-    try {
-      if (currentUser.imageUrl) {
-        // return config.imageFolder + currentUser.imageUrl;
-      } else {
-        return {avater};
-      }
-    } catch (error) {
-      return {avater};
-    }
-  };
 
   const menu = (
     <$Menu onClick={handleMenuClick} className="top-bar-dropdown">
@@ -62,7 +51,7 @@ const Header = (props) => {
   return (
     <div className="top-header">
       <div className="topbar-btn-wrapper">
-        <$Avatar src={displayProfileImage(currentUser)} />
+        {/* <$Avatar src={displayProfileImage(currentUser)} /> */}
         <$Dropdown
           overlay={menu}
           placement="bottomRight"

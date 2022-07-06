@@ -97,6 +97,13 @@ const Layout = (props) => {
             >
               Dashboard
             </$Menu.Item>
+            <$Menu.Item
+              key={RoutesConstant.courses}
+              icon={Mainmenu[1]}
+              onClick={() => history.push(RoutesConstant.courses)}
+            >
+              Courses
+            </$Menu.Item>
             <$Menu.Item key="logOut" onClick={handleLogOut} icon={Mainmenu[5]}>
               Log Out
             </$Menu.Item>

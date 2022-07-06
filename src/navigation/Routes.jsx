@@ -1,4 +1,4 @@
-import { Login, Dashboard, Home, Register } from "../pages";
+import { Login, Dashboard, Home, Register, Courses } from "../pages";
 import { Redirect, Route } from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
 import { DashBoardLayOut } from "../components/layouts/dashBoard";
@@ -12,6 +12,15 @@ export default () => {
       key="dashBoard"
       path={RoutesConstant.dashboard}
       component={Dashboard}
+      isLayOut={true}
+      Layout={DashBoardLayOut}
+      accessLevel={StringConstant.admin}
+    />,
+    <PrivateRoutes
+      exact
+      key="courses"
+      path={RoutesConstant.courses}
+      component={Courses}
       isLayOut={true}
       Layout={DashBoardLayOut}
       accessLevel={StringConstant.admin}

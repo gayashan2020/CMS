@@ -11,7 +11,6 @@ import {
   $Card,
 } from "../../components/antd";
 import { Link } from "react-router-dom";
-import { User } from "../../services";
 import {
   setAccessToken,
   setUser,
@@ -134,14 +133,14 @@ class Login extends Component {
     try {
       //send user ID & password and get tokens
       let data = await logInWithEmailAndPassword(form.userName, form.password);
-      console.log(data.user.email);
+      // console.log(data.user.email);
       // this.resetFields();
 
       if (data) {
-        removeAccessToken();
-        removeUser();
-        setAccessToken(data.user.accessToken);
-        setUser(data.user.email)
+        // removeAccessToken();
+        // removeUser();
+        // setAccessToken(data.user.accessToken);
+        // setUser(data.user.email)
 
         this.setState({ loading: false });
         this.props.history.push(RoutesConstant.dashboard);

@@ -7,7 +7,7 @@ import {
 } from "../../config/LocalStorage";
 import { $Input, $TextArea, $Message, $Spin } from "../../components/antd";
 import { Row, Col, Button, Modal, Input } from "antd";
-import "./Dashboard.scss";
+import "./Courses.scss";
 import { db } from "../../config/firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
@@ -20,7 +20,7 @@ import {
   doc,
 } from "firebase/firestore";
 
-class Dashboard extends Component {
+class Courses extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -369,14 +369,6 @@ class Dashboard extends Component {
                               </p>
                             </div>
                           )}
-                          {this.state.rowArray[index][i].split("_")[1] ===
-                            "b" && (
-                            <div className="dash-bg">
-                              <p>
-                                {this.state.rowArray[index][i].split("_")[0]}
-                              </p>
-                            </div>
-                          )}
                         </Row>
                       )}
                       {e !== 1 && (
@@ -678,4 +670,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default Courses;

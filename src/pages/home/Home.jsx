@@ -5,7 +5,7 @@ import {
   getAccessToken,
   getUser,
 } from "../../config/LocalStorage";
-import { $Input, $TextArea, $Message } from "../../components/antd";
+import { $Input, $TextArea, $Message, $Spin } from "../../components/antd";
 import { Row, Col, Button, Modal, Input } from "antd";
 import "./Home.scss";
 import { db } from "../../config/firebase";
@@ -19,12 +19,15 @@ import {
   addDoc,
   onSnapshot,
 } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       rowArray: [[1]],
       elementArray: [[1]],
+      image: null,
       text: "",
       textArea: "",
       index: 0,
@@ -38,7 +41,6 @@ class Home extends Component {
 
   componentDidMount = async () => {
     try {
-      // let dataRow = await getDoc(doc(db, '3GssDbdr8NKjcCKcV4NZ',"home"))
       const q = query(collection(db, "home"));
       const data = onSnapshot(q, (querySnapshot) => {
         const Row = [];
@@ -219,9 +221,10 @@ class Home extends Component {
       background: "#0092ff",
       padding: "8px 0",
     };
-    const { columnArray, rowArray } = this.state;
+    const { columnArray, rowArray, image, loading } = this.state;
     return (
       <div>
+        {loading && <$Spin />}
         {rowArray.length !== 0 &&
           rowArray.map((element, index) => (
             <Row

@@ -17,6 +17,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { $Message } from "../components/antd";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC_cmLmMV4aCGyGN1vK2hEouoYOzqE3f2Y",
@@ -25,7 +26,7 @@ const firebaseConfig = {
   storageBucket: "medicallms.appspot.com",
   messagingSenderId: "220410726604",
   appId: "1:220410726604:web:7e0f055f31d1fec7059a69",
-  measurementId: "G-1XSVWL48EV",
+  measurementId: "G-1XSVWL48EV"
 };
 
 // Initialize Firebase
@@ -94,9 +95,14 @@ const logout = () => {
   signOut(auth);
 };
 
+const storage = getStorage();
+
 export {
   auth,
   db,
+  storage,
+  ref,
+  uploadBytes,
   signInWithGoogle,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
