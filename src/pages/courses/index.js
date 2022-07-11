@@ -1,1 +1,3 @@
-export { default as Courses } from "./Courses";
+export * from "./Home";
+export * from "./AddCourses";
+export * from "./ViewCourses";

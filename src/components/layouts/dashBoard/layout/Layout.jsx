@@ -8,6 +8,7 @@ import { useHistory, useLocation } from "react-router";
 import { RoutesConstant } from "../../../../assets/constants";
 import {
   getUser,
+  getAccessToken,
   removeAccessToken,
   removeUser,
 } from "../../../../config/LocalStorage";
@@ -34,6 +35,7 @@ const Layout = (props) => {
   const toggleCollapse = () => {
     isCollapsed ? setCollapsed(false) : setCollapsed(true);
   };
+  const userRole = JSON.parse(getAccessToken()).role;
 
   let Mainmenu = [
     <HomeOutlined />,
@@ -104,6 +106,24 @@ const Layout = (props) => {
             >
               Courses
             </$Menu.Item>
+            {userRole && userRole === "admin" && (
+              <$Menu.Item
+                key={RoutesConstant.users}
+                icon={Mainmenu[1]}
+                onClick={() => history.push(RoutesConstant.users)}
+              >
+                Users
+              </$Menu.Item>
+            )}
+            {userRole && (userRole === "mentor" || userRole === "admin") && (
+              <$Menu.Item
+                key={RoutesConstant.enroll}
+                icon={Mainmenu[1]}
+                onClick={() => history.push(RoutesConstant.enroll)}
+              >
+                Enroll
+              </$Menu.Item>
+            )}
             <$Menu.Item key="logOut" onClick={handleLogOut} icon={Mainmenu[5]}>
               Log Out
             </$Menu.Item>

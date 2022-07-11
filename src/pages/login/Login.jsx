@@ -9,6 +9,7 @@ import {
   $Input,
   $Button,
   $Card,
+  $Message,
 } from "../../components/antd";
 import { Link } from "react-router-dom";
 import {
@@ -20,11 +21,18 @@ import {
   removeUser,
 } from "../../config/LocalStorage";
 import { RoutesConstant } from "../../assets/constants";
+import { db } from "../../config/firebase";
 import {
-  auth,
-  logInWithEmailAndPassword,
-  signInWithGoogle,
-} from "../../config/firebase";
+  getFirestore,
+  query,
+  doc,
+  getDoc,
+  getDocs,
+  collection,
+  where,
+  addDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { Row, Col, Button } from "antd";
 
 const schema = Joi.object({
@@ -58,10 +66,32 @@ class Login extends Component {
         userName: "",
         password: "",
       },
+      users: [],
       errors: {},
       loading: false,
     };
   }
+
+  componentDidMount = async () => {
+    this.setState({ loading: true });
+    try {
+      const q = query(collection(db, "users"));
+
+      const querySnapshot = await getDocs(q);
+      const Row = [];
+      querySnapshot.forEach((doc) => {
+        Row.push(doc.data());
+      });
+      this.setState({
+        users: Row,
+      });
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      $Message.error("Error loading user data");
+    }
+    this.setState({ loading: false });
+  };
 
   validate = () => {
     // console.log('clicked');
@@ -131,24 +161,19 @@ class Login extends Component {
     const form = { ...this.state.form };
 
     try {
-      //send user ID & password and get tokens
-      let data = await logInWithEmailAndPassword(form.userName, form.password);
-      // console.log(data.user.email);
-      // this.resetFields();
-
-      if (data) {
-        // removeAccessToken();
-        // removeUser();
-        // setAccessToken(data.user.accessToken);
-        // setUser(data.user.email)
-
-        this.setState({ loading: false });
-        this.props.history.push(RoutesConstant.dashboard);
-      } else {
-        this.setState({ loading: false });
-      }
-
-      return;
+      this.state.users.forEach((element) => {
+        if (
+          element.email === form.userName &&
+          element.password === form.password
+        ) {
+          this.setState({ loading: false });
+          $Message.success("Successfully logged in");
+          removeAccessToken();
+          setAccessToken(JSON.stringify(element));
+          this.props.history.push(RoutesConstant.dashboard);
+        }
+      });
+      this.setState({ loading: false });
     } catch (error) {
       console.log(error);
       this.setState({ loading: false });

@@ -1,0 +1,43 @@
+.element{
+    display: flex;
+    justify-content: center;
+    // background: #0092ff;
+    padding: "8px 0",
+}
+
+.img{
+    width:100%;
+    max-width:600px;
+}
+
+.grn-btn {
+  font-weight: 600;
+  cursor: pointer;
+  color: #7267cb;
+  margin-bottom: 0;
+  padding: 5px;
+}
+.grn-btn:hover {
+  color: #23acd8;
+}
+
+$mobile: 1200px;
+
+@mixin mobile {
+  @media (max-width: #{$mobile}) {
+    @content;
+  }
+}
+@include mobile {
+  .ant-row {
+   flex-direction: column !important;
+  }}
+
+@function color($color-name) {
+  @return map-get($colors, $color-name);
+}
+@mixin mobile {
+  @media (max-width: #{$mobile}) {
+    @content;
+  }
+}

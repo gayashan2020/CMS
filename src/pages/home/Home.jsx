@@ -6,7 +6,7 @@ import {
   getUser,
 } from "../../config/LocalStorage";
 import { $Input, $TextArea, $Message, $Spin } from "../../components/antd";
-import { Row, Col, Button, Modal, Input } from "antd";
+import { Row, Col, Button, Modal, Input, Card } from "antd";
 import "./Home.scss";
 import { db } from "../../config/firebase";
 import {
@@ -20,7 +20,8 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-
+import { RoutesConstant } from "../../assets/constants";
+const { Meta } = Card;
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +37,7 @@ class Home extends Component {
       modelPara: false,
       modelImg: false,
       modelHP: false,
+      courses: [],
     };
   }
 
@@ -59,6 +61,23 @@ class Home extends Component {
       //   //   elementArray: newElement,
       // });
     } catch (err) {
+      console.error(err);
+      $Message.error(err.message);
+    }
+
+    try {
+      const docRef = query(collection(db, "courses"));
+
+      const querySnapshot = await getDocs(docRef);
+      const Row = [];
+      querySnapshot.forEach((doc) => {
+        Row.push(doc.data());
+      });
+      this.setState({
+        courses: Row,
+      });
+    } catch (err) {
+      this.setState({ loading: false });
       console.error(err);
       $Message.error(err.message);
     }
@@ -202,6 +221,11 @@ class Home extends Component {
     });
   };
 
+  navigateNew = (id) => {
+    console.log(RoutesConstant.viewCourses + "?id=" + id, "id");
+    this.props.history.push(RoutesConstant.viewCourses + "?id=" + id);
+  };
+
   saveArray = async () => {
     let row = this.state.rowArray;
     let jsonRow = JSON.stringify(row);
@@ -221,7 +245,7 @@ class Home extends Component {
       background: "#0092ff",
       padding: "8px 0",
     };
-    const { columnArray, rowArray, image, loading } = this.state;
+    const { columnArray, rowArray, image, loading, courses } = this.state;
     return (
       <div>
         {loading && <$Spin />}
@@ -278,6 +302,41 @@ class Home extends Component {
                             <p>{this.state.rowArray[index][i].split("_")[2]}</p>
                           </div>
                         )}
+                      {e !== 1 &&
+                        this.state.rowArray[index][i].split("_")[1] === "vv" &&
+                        courses !== {} &&
+                        courses.map((element, index) => (
+                          <Row
+                            key={index}
+                            style={{ margin: "20px" }}
+                            gutter={{
+                              xs: 8,
+                              sm: 16,
+                              md: 24,
+                              lg: 32,
+                            }}
+                          >
+                            <Card
+                              hoverable
+                              style={{ width: 240 }}
+                              cover={<img alt="example" src={element.image} />}
+                              onClick={() => this.navigateNew(element.cid)}
+                            >
+                              <Meta
+                                title={element.title}
+                                description={element.date}
+                              />
+                              <Row>
+                                <p style={{ margin: "5px" }}>
+                                  {element.duration}
+                                </p>
+                                <p style={{ margin: "5px" }}>
+                                  participants : {element.participants}
+                                </p>
+                              </Row>
+                            </Card>
+                          </Row>
+                        ))}
                     </div>
                   </Col>
                 ))}

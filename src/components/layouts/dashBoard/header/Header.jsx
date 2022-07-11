@@ -10,6 +10,7 @@ import {
 } from "../../../antd";
 import {
   getUser,
+  getAccessToken,
   removeAccessToken,
   removeUser,
 } from "../../../../config/LocalStorage";
@@ -35,6 +36,7 @@ const Header = (props) => {
 
 
   const { UserOutlined, DownOutlined } = $AntIcons;
+  const userData = getAccessToken();
 
   function handleButtonClick(e) {}
 
@@ -58,7 +60,7 @@ const Header = (props) => {
           className="topbar-btn"
           trigger={["click"]}
         >
-          <$Button>{'User'}</$Button>
+          <$Button>{JSON.parse(userData).username}</$Button>
         </$Dropdown>
       </div>
     </div>

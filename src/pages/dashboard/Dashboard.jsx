@@ -6,7 +6,7 @@ import {
   getUser,
 } from "../../config/LocalStorage";
 import { $Input, $TextArea, $Message, $Spin } from "../../components/antd";
-import { Row, Col, Button, Modal, Input } from "antd";
+import { Row, Col, Button, Modal, Input, Card } from "antd";
 import "./Dashboard.scss";
 import { db } from "../../config/firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -19,7 +19,8 @@ import {
   setDoc,
   doc,
 } from "firebase/firestore";
-
+import { RoutesConstant } from "../../assets/constants";
+const { Meta } = Card;
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -38,8 +39,45 @@ class Dashboard extends Component {
       editModel: false,
       modelMH: false,
       loading: false,
+      courses: [],
     };
   }
+
+  componentDidMount = async () => {
+    // try {
+    //   const docRef = doc(db, "courses", "courses");
+    //   const docSnap = await getDoc(docRef);
+
+    //   if (docSnap.exists()) {
+    //     console.log("Document data:", docSnap.data());
+    //     this.setState({
+    //       courses: docSnap.data(),
+    //     });
+    //   } else {
+    //     // doc.data() will be undefined in this case
+    //     console.log("No such document!");
+    //   }
+    // } catch (error) {}
+    this.setState({ loading: true });
+    try {
+      const q = query(collection(db, "courses"));
+
+      const querySnapshot = await getDocs(q);
+      const Row = [];
+      querySnapshot.forEach((doc) => {
+        Row.push(doc.data());
+      });
+      this.setState({
+        courses: Row,
+      });
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      $Message.error(err.message);
+    }
+    this.setState({ loading: false });
+  };
+
   addColumn = (index) => {
     let row = this.state.rowArray;
     let newRow = [];
@@ -165,6 +203,15 @@ class Dashboard extends Component {
     });
   };
 
+  addElementCourses = (index, i) => {
+    let row = this.state.rowArray;
+    row[index][i] = "_vv";
+    this.setState({
+      rowArray: row,
+      selectModel: false,
+    });
+  };
+
   selectModel = (index, i) => {
     this.setState({
       i: i,
@@ -235,6 +282,11 @@ class Dashboard extends Component {
     });
   };
 
+  navigateNew = (id) => {
+    console.log(RoutesConstant.viewCourses + "?id=" + id, "id");
+    this.props.history.push(RoutesConstant.viewCourses + "?id=" + id);
+  };
+
   onFileChange = async (event) => {
     let name = event.target.files[0].name;
     let file = event.target.files[0];
@@ -284,7 +336,7 @@ class Dashboard extends Component {
       background: "#0092ff",
       padding: "8px 0",
     };
-    const { columnArray, rowArray, loading, index, i } = this.state;
+    const { columnArray, rowArray, loading, index, i, courses } = this.state;
     return (
       <div>
         {loading && <$Spin />}
@@ -377,6 +429,43 @@ class Dashboard extends Component {
                               </p>
                             </div>
                           )}
+                          {this.state.rowArray[index][i].split("_")[1] ===
+                            "vv" &&
+                            courses !== {} &&
+                            courses.map((element, index) => (
+                              <Row
+                                key={index}
+                                style={{ margin: "20px" }}
+                                gutter={{
+                                  xs: 8,
+                                  sm: 16,
+                                  md: 24,
+                                  lg: 32,
+                                }}
+                              >
+                                <Card
+                                  hoverable
+                                  style={{ width: 240 }}
+                                  cover={
+                                    <img alt="example" src={element.image} />
+                                  }
+                                  onClick={() => this.navigateNew(element.cid)}
+                                >
+                                  <Meta
+                                    title={element.title}
+                                    description={element.date}
+                                  />
+                                  <Row>
+                                    <p style={{ margin: "5px" }}>
+                                      {element.duration}
+                                    </p>
+                                    <p style={{ margin: "5px" }}>
+                                      participants : {element.participants}
+                                    </p>
+                                  </Row>
+                                </Card>
+                              </Row>
+                            ))}
                         </Row>
                       )}
                       {e !== 1 && (
@@ -477,6 +566,17 @@ class Dashboard extends Component {
             >
               Add Main Header
             </Button>
+            <Button
+              key="submit"
+              className="common-btn"
+              type="primary"
+              onClick={() => {
+                this.addElementCourses(index, i);
+              }}
+              style={{ margin: "10px" }}
+            >
+              Add Courses
+            </Button>
           </div>
         </Modal>
 
@@ -569,7 +669,6 @@ class Dashboard extends Component {
             // value={this.state.text}
             handleChange={this.validateProperty}
           />
-          {console.log(this.state.index, this.state.i, this.state.text)}
           <div className="modal-footer">
             <Button
               key="back"

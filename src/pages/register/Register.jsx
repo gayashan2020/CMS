@@ -22,11 +22,19 @@ import {
 } from "../../config/LocalStorage";
 import { RoutesConstant } from "../../assets/constants";
 import {
-  auth,
-  registerWithEmailAndPassword,
-  signInWithGoogle,
-} from "../../config/firebase";
+  getFirestore,
+  query,
+  doc,
+  getDoc,
+  setDoc,
+  getDocs,
+  collection,
+  where,
+  addDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { Row, Col, Button } from "antd";
+import { db } from "../../config/firebase";
 
 const schema = Joi.object({
   //regex fo NIC, name, mobile
@@ -69,10 +77,45 @@ class Register extends Component {
         password: "",
         rePassword: "",
       },
+      users: [],
+      newCid: "",
       errors: {},
       loading: false,
     };
   }
+
+  componentDidMount = async () => {
+    this.setState({ loading: true });
+    try {
+      const q = query(collection(db, "users"));
+
+      const querySnapshot = await getDocs(q);
+      const Row = [];
+      querySnapshot.forEach((doc) => {
+        Row.push(doc.data());
+      });
+      this.setState({
+        users: Row,
+      });
+    } catch (err) {
+      this.setState({ loading: false });
+      console.error(err);
+      $Message.error(err.message);
+    }
+    this.setState({ loading: false });
+    let cidCount = [];
+    if (this.state.users) {
+      this.state.users.forEach((element) => {
+        let val = parseInt(element.uid.split("u")[1]);
+        cidCount.push(val);
+      });
+    }
+
+    let maxVal = Math.max(...cidCount) + 1;
+    this.setState({
+      newCid: "u" + maxVal,
+    });
+  };
 
   validate = () => {
     // console.log('clicked');
@@ -140,32 +183,26 @@ class Register extends Component {
     this.setState({ loading: true });
 
     const form = { ...this.state.form };
+    let uid = this.state.newCid;
+    let val = {
+      uid: uid,
+      username: form.userName,
+      password: form.password,
+      role: "pending",
+      email: form.email,
+    };
 
     try {
-      //send user ID & password and get tokens
-      await registerWithEmailAndPassword(
-        form.userName,
-        form.email,
-        form.password
-      );
-      // console.log(data);
-      // this.resetFields();
-
-      // //execute login function in AuthContext.js
-      // //await this.context.logIn(data, this.props);
-      // removeAccessToken();
-      // removeUser();
-      // setAccessToken(data.token);
-      // setUser(JSON.stringify(data.details));
-
-      // //stop loading
+      await setDoc(doc(db, "users", uid), val);
+      $Message.success("Successfully Registered");
       this.setState({ loading: false });
       this.props.history.push(RoutesConstant.login);
-      return;
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
       this.setState({ loading: false });
+      console.error(err);
+      $Message.error("Error in registration");
     }
+    this.setState({ loading: false });
   };
 
   render() {
