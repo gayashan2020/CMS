@@ -18,7 +18,7 @@ import { Card, Row, Col, Button, Modal, Input } from "antd";
 import { RoutesConstant } from "../../../assets/constants";
 import { getAccessToken } from "../../../config/LocalStorage";
 const { Meta } = Card;
-const userRole = JSON.parse(getAccessToken()).role;
+// const userRole = JSON.parse(getAccessToken()).role;
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -26,12 +26,14 @@ class Home extends Component {
       courses: [],
       loading: false,
       users: [],
+      userRole: "",
     };
   }
 
   componentDidMount = async () => {
     this.setState({ loading: true });
     try {
+      const userRole = JSON.parse(getAccessToken()).role;
       const q = query(collection(db, "courses"));
 
       const querySnapshot = await getDocs(q);
@@ -93,7 +95,7 @@ class Home extends Component {
   };
 
   render() {
-    const { courses, loading } = this.state;
+    const { courses, loading, userRole } = this.state;
 
     return (
       <div className="element">
