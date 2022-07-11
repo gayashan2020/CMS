@@ -30,7 +30,7 @@ import { RoutesConstant } from "../../assets/constants";
 import { async } from "@firebase/util";
 import { CheckCircleOutlined } from "@ant-design/icons";
 const { Meta } = Card;
-const currentAccess = JSON.parse(getAccessToken()).role;
+// const currentAccess = JSON.parse(getAccessToken()).role;
 class Users extends Component {
   constructor(props) {
     super(props);
