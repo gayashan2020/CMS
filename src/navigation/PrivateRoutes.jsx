@@ -11,18 +11,27 @@ const PrivateRoutes = ({
   Layout,
   accessLevel,
 }) => {
+  const checkAccess = () => {
+    if (getAccessToken()) {
+      return true;
+    } else return false;
+  };
   return (
     <Route
       exact={exact}
       key={key}
       path={path}
       render={(props) => {
-        return isLayOut ? (
-          <Layout>
+        return checkAccess() ? (
+          isLayOut ? (
+            <Layout>
+              <Component {...props} />
+            </Layout>
+          ) : (
             <Component {...props} />
-          </Layout>
+          )
         ) : (
-          <Component {...props} />
+          <Redirect to={RoutesConstant.login} />
         );
       }}
     />
