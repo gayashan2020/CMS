@@ -12,7 +12,10 @@ const PrivateRoutes = ({
   accessLevel,
 }) => {
   const checkAccess = () => {
-    if (getAccessToken()) {
+    if (
+      getAccessToken() &&
+      JSON.parse(getAccessToken()).status === "approved"
+    ) {
       return true;
     } else return false;
   };

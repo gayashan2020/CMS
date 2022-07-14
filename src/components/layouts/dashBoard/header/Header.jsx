@@ -60,7 +60,7 @@ const Header = (props) => {
           className="topbar-btn"
           trigger={["click"]}
         >
-          <$Button>{JSON.parse(userData).username}</$Button>
+          <$Button>{JSON.parse(userData).firstName+" "+JSON.parse(userData).lastName}</$Button>
         </$Dropdown>
       </div>
     </div>

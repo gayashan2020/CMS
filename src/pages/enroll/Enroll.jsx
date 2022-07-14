@@ -48,7 +48,12 @@ class Enroll extends Component {
     this.setState({ loading: true });
     this.loadData();
     this.loadDataCourse();
+    this.loadTable();
+    this.setState({ loading: false });
+  };
 
+  loadTable = async () => {
+    this.setState({ loading: true });
     try {
       const docRef = doc(db, "mentors", currentAccess.uid);
 
@@ -56,6 +61,7 @@ class Enroll extends Component {
 
       if (docSnap.exists()) {
         let data = docSnap.data();
+        console.log(data, "doc");
 
         let userApprove = [];
         if (data.users) {
@@ -72,16 +78,6 @@ class Enroll extends Component {
           mentor: data,
           userApprove: userApprove,
         });
-        // const docRefUser = doc(db, "courses", data.users.split(",")[0]);
-        // const docRefCourse = doc(db, "courses", data.users.split(",")[1]);
-        // const docSnapUser = await getDoc(docRefUser);
-        // const docSnapCourse = await getDoc(docRefCourse);
-        // if (docSnapUser.exists() && docSnapCourse.exists()) {
-        //   this.setState({
-        //     users: docSnapUser.data(),
-        //     course: docSnapCourse.data(),
-        //   });
-        // }
         this.setState({ loading: false });
       } else {
         this.setState({ loading: false });
@@ -154,6 +150,7 @@ class Enroll extends Component {
       await updateDoc(docRef, {
         users: users,
       });
+      window.location.reload();
       $Message.success("Successfully Approved");
       this.setState({ loading: false });
     } catch (err) {
@@ -192,8 +189,8 @@ class Enroll extends Component {
       let user = this.state.users;
       let name = user.find(function (val) {
         return val.uid === record;
-      }).username;
-      return name;
+      });
+      return name.firstName + " " + name.lastName;
     } catch (error) {
       return "";
     }

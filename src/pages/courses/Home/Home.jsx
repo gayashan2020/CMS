@@ -43,6 +43,7 @@ class Home extends Component {
       });
       this.setState({
         courses: Row,
+        userRole: userRole,
       });
     } catch (err) {
       this.setState({ loading: false });

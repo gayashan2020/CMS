@@ -36,6 +36,7 @@ const Layout = (props) => {
     isCollapsed ? setCollapsed(false) : setCollapsed(true);
   };
   const userRole = JSON.parse(getAccessToken()).role;
+  const userStatus = JSON.parse(getAccessToken()).status;
 
   let Mainmenu = [
     <HomeOutlined />,
@@ -84,50 +85,65 @@ const Layout = (props) => {
               )}
             </$Button>
           </div>
-          <$Menu
-            defaultSelectedKeys={[RoutesConstant.dashboard]}
-            mode="inline"
-            theme="dark"
-            inlineCollapsed={isCollapsed}
-            selectedKeys={getMainPath()}
-            defaultOpenKeys={getMainPath()}
-          >
-            <$Menu.Item
-              key={RoutesConstant.dashboard}
-              icon={Mainmenu[0]}
-              onClick={() => history.push(RoutesConstant.dashboard)}
+          {userStatus && userStatus === "approved" && (
+            <$Menu
+              defaultSelectedKeys={[RoutesConstant.userProfile]}
+              mode="inline"
+              theme="dark"
+              inlineCollapsed={isCollapsed}
+              selectedKeys={getMainPath()}
+              defaultOpenKeys={getMainPath()}
             >
-              Dashboard
-            </$Menu.Item>
-            <$Menu.Item
-              key={RoutesConstant.courses}
-              icon={Mainmenu[1]}
-              onClick={() => history.push(RoutesConstant.courses)}
-            >
-              Courses
-            </$Menu.Item>
-            {userRole && userRole === "admin" && (
               <$Menu.Item
-                key={RoutesConstant.users}
-                icon={Mainmenu[1]}
-                onClick={() => history.push(RoutesConstant.users)}
+                key={RoutesConstant.userProfile}
+                icon={Mainmenu[0]}
+                onClick={() => history.push(RoutesConstant.userProfile)}
               >
-                Users
+                User Profile
               </$Menu.Item>
-            )}
-            {userRole && (userRole === "mentor" || userRole === "admin") && (
+              {userRole && userRole === "admin" && (
+                <$Menu.Item
+                  key={RoutesConstant.dashboard}
+                  icon={Mainmenu[0]}
+                  onClick={() => history.push(RoutesConstant.dashboard)}
+                >
+                  Dashboard
+                </$Menu.Item>
+              )}
               <$Menu.Item
-                key={RoutesConstant.enroll}
+                key={RoutesConstant.courses}
                 icon={Mainmenu[1]}
-                onClick={() => history.push(RoutesConstant.enroll)}
+                onClick={() => history.push(RoutesConstant.courses)}
               >
-                Enroll
+                Courses
               </$Menu.Item>
-            )}
-            <$Menu.Item key="logOut" onClick={handleLogOut} icon={Mainmenu[5]}>
-              Log Out
-            </$Menu.Item>
-          </$Menu>
+              {userRole && userRole === "admin" && (
+                <$Menu.Item
+                  key={RoutesConstant.users}
+                  icon={Mainmenu[1]}
+                  onClick={() => history.push(RoutesConstant.users)}
+                >
+                  Users
+                </$Menu.Item>
+              )}
+              {userRole && (userRole === "mentor" || userRole === "admin") && (
+                <$Menu.Item
+                  key={RoutesConstant.enroll}
+                  icon={Mainmenu[1]}
+                  onClick={() => history.push(RoutesConstant.enroll)}
+                >
+                  Enroll
+                </$Menu.Item>
+              )}
+              <$Menu.Item
+                key="logOut"
+                onClick={handleLogOut}
+                icon={Mainmenu[5]}
+              >
+                Log Out
+              </$Menu.Item>
+            </$Menu>
+          )}
         </div>
 
         <div className="content-container">{props.children}</div>

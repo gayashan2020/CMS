@@ -8,6 +8,7 @@ import {
   ViewCourses,
   Users,
   Enroll,
+  UserProfile,
 } from "../pages";
 import { Redirect, Route } from "react-router-dom";
 import PrivateRoutes from "./PrivateRoutes";
@@ -17,6 +18,15 @@ import React, { useContext, useState, useEffect } from "react";
 
 export default () => {
   return [
+    <PrivateRoutes
+      exact
+      key="userProfile"
+      path={RoutesConstant.userProfile}
+      component={UserProfile}
+      isLayOut={true}
+      Layout={DashBoardLayOut}
+      accessLevel={StringConstant.admin}
+    />,
     <PrivateRoutes
       exact
       key="dashBoard"

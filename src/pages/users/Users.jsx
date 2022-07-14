@@ -67,18 +67,27 @@ class Users extends Component {
     this.setState({ loading: false });
   };
 
-  editEntry = async (record, role) => {
+  editEntry = async (record, status) => {
     this.setState({ loading: true });
     let val = {
       uid: record.uid,
-      username: record.username,
+      firstName: record.firstName,
+      lastName: record.lastName,
       password: record.password,
-      role: role,
+      status: status,
+      role: record.role,
+      nic: record.nic,
       email: record.email,
     };
 
     try {
       await setDoc(doc(db, "users", record.uid), val);
+      if (record.role==='mentor') {
+        let valMentor = {
+          uid: record.uid,
+        };
+        await setDoc(doc(db, "mentors", record.uid), valMentor);
+      }
       $Message.success("Successfully Approved");
       this.setState({ loading: false });
     } catch (err) {
@@ -97,17 +106,17 @@ class Users extends Component {
           <$Space size="middle">
             <p
               className="grn-btn"
-              onClick={() => this.editEntry(record, "mentor")}
+              onClick={() => this.editEntry(record, "approved")}
             >
-              Mentor
+              Approve
             </p>
           </$Space>
           <$Space size="middle">
             <p
               className="grn-btn"
-              onClick={() => this.editEntry(record, "user")}
+              onClick={() => this.editEntry(record, "rejected")}
             >
-              User
+              Reject
             </p>
           </$Space>
         </div>
@@ -119,14 +128,24 @@ class Users extends Component {
 
   columns = [
     {
-      title: "Name",
-      dataIndex: "username",
-      key: "username",
+      title: "First Name",
+      dataIndex: "firstName",
+      key: "firstName",
+    },
+    {
+      title: "Last Name",
+      dataIndex: "lastName",
+      key: "lastName",
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+    },
+    {
+      title: "NIC",
+      dataIndex: "nic",
+      key: "nic",
     },
     {
       title: "Role",
@@ -135,8 +154,8 @@ class Users extends Component {
     },
     {
       title: "Action",
-      dataIndex: "role",
-      key: "role",
+      dataIndex: "status",
+      key: "status",
       width: "15%",
       align: "center",
       render: (dataIndex, record) => this.checkPermission(dataIndex, record),

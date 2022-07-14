@@ -45,28 +45,18 @@ class ViewCourses extends Component {
       loading: false,
       stateEnroll: "none",
       courseBuilder: [[]],
+      user: [],
     };
   }
 
   componentDidMount = async () => {
-    // try {
-    //   const docRef = doc(db, "courses", "courses");
-    //   const docSnap = await getDoc(docRef);
+    this.loadData();
+  };
 
-    //   if (docSnap.exists()) {
-    //     console.log("Document data:", docSnap.data());
-    //     this.setState({
-    //       courses: docSnap.data(),
-    //     });
-    //   } else {
-    //     // doc.data() will be undefined in this case
-    //     console.log("No such document!");
-    //   }
-    // } catch (error) {}
+  loadData = async () => {
     let userData = JSON.parse(getAccessToken());
     this.setState({ loading: true });
     let id = new URLSearchParams(this.props.location.search).get("id");
-    console.log(id);
     try {
       const docRef = doc(db, "courses", id);
 
@@ -84,6 +74,7 @@ class ViewCourses extends Component {
           });
         }
         this.setState({
+          user: userData,
           courses: data,
           courseBuilder: JSON.parse(data.courseBuilder),
         });
@@ -126,12 +117,14 @@ class ViewCourses extends Component {
           usersMentor.push(element);
         });
       }
+      this.setState({ stateEnroll: "pending" });
       usersMentor.push(userData.uid + "," + courses.cid);
       await updateDoc(docRefMentor, {
         users: usersMentor,
       });
 
-      this.setState({ loading: false, stateEnroll: "pending" });
+      // window.location.reload();
+      this.setState({ loading: false });
     } catch (error) {
       console.log(error);
       this.setState({ loading: false });
@@ -139,7 +132,7 @@ class ViewCourses extends Component {
   };
 
   render() {
-    const { courses, loading, stateEnroll, courseBuilder } = this.state;
+    const { courses, loading, stateEnroll, courseBuilder, user } = this.state;
 
     return (
       <div>
@@ -157,7 +150,7 @@ class ViewCourses extends Component {
             </Col>
             <Col className="gutter-row" span={6}>
               <Row>
-                {stateEnroll === "approved" && (
+                {user.role === "user" && stateEnroll === "approved" && (
                   <Col>
                     <div className="tutor-card">
                       <Row style={style}>
@@ -175,7 +168,7 @@ class ViewCourses extends Component {
                     </div>
                   </Col>
                 )}
-                {stateEnroll === "pending" && (
+                {user.role === "user" && stateEnroll === "pending" && (
                   <Col>
                     <div className="tutor-card">
                       <Row style={style}>
@@ -184,7 +177,7 @@ class ViewCourses extends Component {
                     </div>
                   </Col>
                 )}
-                {stateEnroll === "none" && (
+                {user.role === "user" && stateEnroll === "none" && (
                   <Col>
                     <div className="tutor-card">
                       <Row style={style}>

@@ -10,6 +10,7 @@ import {
   $Button,
   $Card,
   $Message,
+  $Select,
 } from "../../components/antd";
 import { Link } from "react-router-dom";
 import {
@@ -33,9 +34,10 @@ import {
   addDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button, Select } from "antd";
 import { db } from "../../config/firebase";
-
+import selectConstants from "../../assets/constants/selectConstants";
+const { Option } = Select;
 const schema = Joi.object({
   //regex fo NIC, name, mobile
   email: Joi.string()
@@ -47,8 +49,17 @@ const schema = Joi.object({
     .messages({
       "string.pattern.base": "Enter a valid Email.",
     }),
-  userName: Joi.string().required().label("User Name").messages({
+  firstName: Joi.string().required().label("First Name").messages({
     "string.pattern.base": "Enter a valid User Name.",
+  }),
+  lastName: Joi.string().required().label("Last Name").messages({
+    "string.pattern.base": "Enter a valid User Name.",
+  }),
+  role: Joi.string().required().label("Role").messages({
+    "string.pattern.base": "Select a role.",
+  }),
+  nic: Joi.string().required().label("NIC").messages({
+    "string.pattern.base": "Enter a valid NIC number.",
   }),
   password: Joi.string()
     .regex(
@@ -73,9 +84,12 @@ class Register extends Component {
     this.state = {
       form: {
         email: "",
-        userName: "",
+        firstName: "",
+        lastName: "",
         password: "",
         rePassword: "",
+        role: "",
+        nic: "",
       },
       users: [],
       newCid: "",
@@ -186,9 +200,12 @@ class Register extends Component {
     let uid = this.state.newCid;
     let val = {
       uid: uid,
-      username: form.userName,
+      firstName: form.firstName,
+      lastName: form.lastName,
       password: form.password,
-      role: "pending",
+      status: "pending",
+      role: form.role,
+      nic: form.nic,
       email: form.email,
     };
 
@@ -235,12 +252,22 @@ class Register extends Component {
                             <$Form onSubmit={this.submit}>
                               <div className="login-input-un">
                                 <$Input
-                                  name="userName"
+                                  name="firstName"
                                   autoFocus
-                                  label="User Name"
+                                  label="First Name"
                                   handleChange={this.onHandleChange}
-                                  value={form.userName}
-                                  error={errors.userName}
+                                  value={form.firstName}
+                                  error={errors.firstName}
+                                />
+                              </div>
+                              <div className="login-input-un">
+                                <$Input
+                                  name="lastName"
+                                  autoFocus
+                                  label="Last Name"
+                                  handleChange={this.onHandleChange}
+                                  value={form.lastName}
+                                  error={errors.lastName}
                                 />
                               </div>
                               <div className="login-input-un">
@@ -251,6 +278,28 @@ class Register extends Component {
                                   handleChange={this.onHandleChange}
                                   value={form.email}
                                   error={errors.email}
+                                />
+                              </div>
+                              <div className="login-input-un">
+                                <$Select
+                                  name="role"
+                                  label="Role"
+                                  colon={false}
+                                  value={form.role}
+                                  optionLabel="label"
+                                  optionValue="value"
+                                  options={selectConstants.Register_role}
+                                  handleChange={this.onHandleChange}
+                                />
+                              </div>
+                              <div className="login-input-un">
+                                <$Input
+                                  name="nic"
+                                  autoFocus
+                                  label="NIC"
+                                  handleChange={this.onHandleChange}
+                                  value={form.nic}
+                                  error={errors.nic}
                                 />
                               </div>
                               <div className="login-input-pwd">

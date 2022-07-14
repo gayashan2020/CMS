@@ -164,18 +164,19 @@ class Login extends Component {
       this.state.users.forEach((element) => {
         if (
           element.email === form.userName &&
-          element.password === form.password
+          element.password === form.password &&
+          element.status === "approved"
         ) {
           this.setState({ loading: false });
           $Message.success("Successfully logged in");
           removeAccessToken();
           setAccessToken(JSON.stringify(element));
-          this.props.history.push(RoutesConstant.dashboard);
+          this.props.history.push(RoutesConstant.userProfile);
         }
       });
       this.setState({ loading: false });
     } catch (error) {
-      console.log(error);
+      $Message.error("Error in login in");
       this.setState({ loading: false });
     }
   };

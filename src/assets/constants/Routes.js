@@ -5,7 +5,8 @@ export default {
   addCourses: "/addCourses",
   viewCourses: "/viewCourses",
   home: "/",
-  register:"/register",
+  register: "/register",
   users: "/users",
   enroll: "/enroll",
+  userProfile: "/userProfile",
 };

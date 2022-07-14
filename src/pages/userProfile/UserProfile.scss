@@ -1,0 +1,103 @@
+.detail-modal-wrapper {
+    .commen-feild {
+      text-align: left;
+      padding: 0em 1em;
+    }
+    .tb-chart {
+      margin-bottom: 1em;
+    }
+  }
+  .specification-tb {
+    margin-top: 3em;
+  }
+  .total-qty {
+    padding: 1em 1em 0em 0em;
+  }
+  .pdf-commen-feild,
+  .pdf-sign {
+    text-align: left !important;
+  }
+  .pdf-sign {
+    margin-left: 1em;
+    // margin-top: 2em;
+  }
+  .pdf-commen-feild {
+    .mr-t {
+      margin-top: 3em;
+    }
+    h2 {
+      color: #3e497a;
+    }
+  }
+  .note-tb {
+    border: 1px #cbd1d2 solid;
+    border-bottom: none;
+    margin-bottom: 1.5em;
+    margin-top: 1em;
+  
+    p {
+      margin-bottom: 0;
+    }
+  }
+  .note-tr {
+    border-bottom: 1px #cbd1d2 solid;
+    padding: 6px;
+  }
+  
+  .date-area {
+    width: 14%;
+  }
+  .chairman-pdf {
+    h4 {
+      margin-bottom: 0;
+      background: #3e497a;
+      color: #fff;
+      padding: 6px 7px;
+      width: 163px;
+      text-align: left;
+    }
+    p {
+      margin-bottom: 0;
+      // padding: 6px 7px;
+      padding: 6px 7px 6px 30px;
+    }
+    display: flex;
+    //justify-content: space-between;
+    border: 1px #cbd1d2 solid;
+    //margin-left: 1em;
+  }
+  .chairman-pdf-row {
+    h4 {
+      margin-bottom: 0;
+      background: #3e497a;
+      color: #fff;
+      padding: 6px 7px;
+      width: 163px;
+    }
+    text-align: left;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    justify-content: space-between;
+  }
+  .note-header {
+    h4 {
+      margin-bottom: 0;
+      color: #fff;
+    }
+    background: #3e497a;
+  }
+  .req {
+    // padding: 6px
+  }
+  .pdf-logo {
+    text-align: center;
+    margin-bottom: 1.5em;
+  }
+  .req2 {
+    border-left: 1px #cbd1d2 solid;
+    border-right: 1px #cbd1d2 solid;
+    border-bottom: 1px #cbd1d2 solid;
+    border-top: 1px #cbd1d2 solid;
+    padding: 6px;
+  }
+  
